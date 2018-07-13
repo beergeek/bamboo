@@ -16,7 +16,7 @@ class bamboo::install () {
 
   if $bamboo::manage_grp {
     group { $bamboo::bamboo_grp:
-    ensure => present,
+      ensure => present,
     }
   }
 
