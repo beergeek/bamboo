@@ -45,7 +45,7 @@ describe 'bamboo' do
         'ensure'        => 'present',
         'extract'       => true,
         'extract_path'  => '/opt/atlassian/bamboo',
-        'source'        => 'https://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-6.5.1.tar.gz',
+        'source'        => 'https://product-downloads.atlassian.com/software/bamboo/downloads/atlassian-bamboo-6.5.1.tar.gz',
         'creates'       => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1',
         'cleanup'       => true,
         'user'          => 'bamboo',
