@@ -79,6 +79,8 @@ describe 'bamboo' do
         'line'    => 'bamboo.home=/var/atlassian/application-data/bamboo',
       )
     end
+
+    
     
   end
 

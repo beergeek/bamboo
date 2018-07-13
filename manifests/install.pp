@@ -3,6 +3,7 @@
 #
 class bamboo::install () {
 
+  assert_private()
 
   if $bamboo::manage_user {
     user { $bamboo::bamboo_user:

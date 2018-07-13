@@ -2,16 +2,21 @@
 #
 #
 class bamboo (
-  Boolean               $manage_user        = true,
-  Boolean               $manage_grp         = true,
-  Boolean               $manage_db_settings = true,
-  Bamboo::Db_type       $db_type            = 'postgresql',
-  String                $bamboo_user        = 'bamboo',
-  String                $bamboo_grp         = 'bamboo',
-  String                $version            = '6.5.1',
-  Bamboo::Pathurl       $source_location    = 'https://www.atlassian.com/software/bamboo/downloads/binary',
-  Stdlib::Absolutepath  $bamboo_install_dir = '/opt/atlassian/bamboo',
-  Stdlib::Absolutepath  $bamboo_data_dir    = '/var/atlassian/application-data/bamboo'
+  Bamboo::Db_type         $db_type            = 'postgresql',
+  Bamboo::Pathurl         $source_location    = 'https://www.atlassian.com/software/bamboo/downloads/binary',
+  Boolean                 $manage_db_settings = true,
+  Boolean                 $manage_grp         = true,
+  Boolean                 $manage_user        = true,
+  Optional[Stdlib::Fqdn]  $db_host            = undef,
+  Optional[String]        $db_name            = undef,
+  Optional[String]        $db_password        = undef,
+  Optional[String]        $db_user            = undef,
+  String                  $db_port            = '5432',
+  Stdlib::Absolutepath    $bamboo_data_dir    = '/var/atlassian/application-data/bamboo',
+  Stdlib::Absolutepath    $bamboo_install_dir = '/opt/atlassian/bamboo',
+  String                  $bamboo_grp         = 'bamboo',
+  String                  $bamboo_user        = 'bamboo',
+  String                  $version            = '6.5.1',
 ) {
 
   if $facts['os']['family'] != 'RedHat' {
