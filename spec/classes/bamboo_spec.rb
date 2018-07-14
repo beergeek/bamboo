@@ -154,18 +154,9 @@ describe 'bamboo' do
           'ensure'  => 'present',
           'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
           'line'    => "    <property name=\"hibernate.connection.driver_class\">com.mysql.jdbc.Driver</property>",
-          'match'   => '^( |]t)*<property name\\=\"hibernate.connection.driver_class\">',
-          'after'   => '^( |\t)*<property name\="hibernate.c3p0.timeout">',
-        ).that_requires("File(base_config]")
-      end
-
-      it do
-        is_expected.to contain_file_line('db_dialect').with(
-          'ensure'  => 'present',
-          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
-          'line'    => "    <property name=\"hibernate.dialect\">org.hibernate.dialect.MySQL5InnoDBDialect</property>",
-          'match'   => '^( |]t)*<property name\="hibernate.dialect">',
-        )
+          'match'   => '^( |\\t)*<property name\\="hibernate.connection.driver_class">',
+          'after'   => '^( |\\t)*<property name\\="bamboo.jms.broker.uri">',
+        ).that_requires("File[base_config]")
       end
 
       it do
@@ -173,16 +164,8 @@ describe 'bamboo' do
           'ensure'  => 'present',
           'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
           'line'    => "    <property name=\"hibernate.connection.password\">password123</property>",
-          'match'   => '^( |]t)*<property name="hibernate.connection.password">',
-        )
-      end
-
-      it do
-        is_expected.to contain_file_line('db_user').with(
-          'ensure'  => 'present',
-          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
-          'line'    => "    <property name=\"hibernate.connection.username\">bamboo</property>",
-          'match'   => '^( |]t)*<property name="hibernate.connection.username">',
+          'match'   => '^( |\\t)*<property name\\="hibernate.connection.password">',
+          'after'   => '^( |\\t)*<property name\\="hibernate.connection.driver_class">',
         )
       end
 
@@ -191,7 +174,28 @@ describe 'bamboo' do
           'ensure'  => 'present',
           'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
           'line'    => "    <property name=\"hibernate.connection.url\">jdbc:mysql://mysql0.puppet.vm/bamboodb?autoReconnect=true</property>",
-          'match'   => '^( |]t)*<property name="hibernate.connection.url">',
+          'match'   => '^( |\\t)*<property name\\="hibernate.connection.url">',
+          'after'   => '^( |\\t)*<property name\\="hibernate.connection.password">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_user').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "    <property name=\"hibernate.connection.username\">bamboo</property>",
+          'match'   => '^( |\\t)*<property name\\="hibernate.connection.username">',
+          'after'   => '^( |\\t)*<property name\\="hibernate.connection.url">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_dialect').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "    <property name=\"hibernate.dialect\">org.hibernate.dialect.MySQL5InnoDBDialect</property>",
+          'match'   => '^( |\\t)*<property name\\="hibernate.dialect">',
+          'after'   => '^( |\\t)*<property name\\="hibernate.connection.username">',
         )
       end
     end
