@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application-configuration>
+  <setupStep>setupLicense</setupStep>
+  <setupType>initial</setupType>
+  <buildNumber>60511</buildNumber>
+  <properties>
+    <property name="bamboo.jms.broker.client.uri">failover:(tcp://bamboo.puppet.vm:54663?wireFormat.maxInactivityDuration=300000)?maxReconnectAttempts=10&amp;initialReconnectDelay=15000</property>
+    <property name="bamboo.jms.broker.uri">nio://0.0.0.0:54663</property>
+  </properties>
+</application-configuration>

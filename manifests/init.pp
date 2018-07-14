@@ -16,7 +16,8 @@ class bamboo (
   Optional[String]        $db_port               = undef,
   Optional[String]        $db_user               = undef,
   Optional[String]        $java_args             = undef,
-  Optional[String]        $mysql_driver_pkg      = 'mysql-connector-java-8.0.11.tar.gz',
+  # Version 8 causes issues with Bamboo
+  Optional[String]        $mysql_driver_pkg      = 'mysql-connector-java-5.1.46.tar.gz',
   # $mysql_driver_jar_name must come after $mysql_driver_pkg
   Optional[String]        $mysql_driver_jar_name = "${basename($mysql_driver_pkg, '.tar.gz')}.jar",
   Stdlib::Absolutepath    $bamboo_data_dir       = '/var/atlassian/application-data/bamboo',

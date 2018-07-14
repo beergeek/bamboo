@@ -48,6 +48,13 @@ class bamboo::config {
     line   => "bamboo.home=${bamboo::bamboo_data_dir}",
   }
 
+  file { 'base_config':
+    ensure  => file,
+    path    => "${bamboo::bamboo_data_dir}/bamboo.cfg.xml",
+    source  => 'puppet:///modules/bamboo/bamboo.cfg.xml',
+    replace => false,
+  }
+
   # Startup/Shutdown script
   file { 'init_script':
     ensure  => file,
@@ -80,7 +87,7 @@ class bamboo::config {
       archive { "/tmp/${bamboo::mysql_driver_pkg}":
         ensure          => present,
         extract         => true,
-        extract_command => "tar -zxf %s --strip-components 1 --exclude='lib*' mysql*.jar",
+        extract_command => "tar -zxf %s --strip-components 1 --exclude='lib*' */${bamboo::mysql_driver_jar_name}",
         extract_path    => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}/lib",
         source          => "${bamboo::mysql_driver_source}/${bamboo::mysql_driver_pkg}",
         creates         => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}/lib/${bamboo::mysql_driver_jar_name}",
@@ -93,32 +100,42 @@ class bamboo::config {
     # Database connector config
     file_line { 'db_driver':
       ensure  => present,
-      line    => "\t\t\t<property name=\"hibernate.connection.driver_class\">${_db_driver}</property>",
-      match   => '\s*<property name="hibernate.connection.driver_class">',
-    }
-
-    file_line { 'db_hibernate':
-      ensure  => present,
-      line    => "\t\t\t<property name=\"hibernate.dialect\">${_db_hibernate}</property>",
-      match   => '\s*<property name="hibernate.dialect">',
+      line    => "    <property name=\"hibernate.connection.driver_class\">${_db_driver}</property>",
+      match   => '^( |]t)*<property name\=\"hibernate.connection.driver_class\">',
+      after   => '^( |\t)*<property name\="hibernate.c3p0.timeout">',
+      require => File['base_config'],
     }
 
     file_line { 'db_password':
       ensure  => present,
-      line    => "\t\t\t<property name=\"hibernate.connection.password\">${bamboo::db_password}</property>",
-      match   => '\s*<property name="hibernate.connection.password">',
-    }
-
-    file_line { 'db_user':
-      ensure  => present,
-      line    => "\t\t\t<property name=\"hibernate.connection.username\">${bamboo::db_user}</property>",
-      match   => '\s*<property name="hibernate.connection.username">',
+      line    => "    <property name=\"hibernate.connection.password\">${bamboo::db_password}</property>",
+      match   => '^( |]t)*<property name\="hibernate.connection.password">',
+      after   => '^( |]t)*<property name\=\"hibernate.connection.driver_class\">',
+      require => File_line['db_driver'],
     }
 
     file_line { 'db_url':
       ensure  => present,
-      line    => "\t\t\t<property name=\"hibernate.connection.url\">${_db_url}</property>",
-      match   => '\s*<property name="hibernate.connection.url">',
+      line    => "    <property name=\"hibernate.connection.url\">${_db_url}</property>",
+      match   => '^( |]t)*<property name\=\"hibernate.connection.url\">',
+      after   => '^( |]t)*<property name\="hibernate.connection.password">',
+      require => File_line['db_password'],
+    }
+
+    file_line { 'db_user':
+      ensure  => present,
+      line    => "    <property name=\"hibernate.connection.username\">${bamboo::db_user}</property>",
+      match   => '^( |]t)*<property name\=\"hibernate.connection.username\">',
+      after   => '^( |]t)*<property name\=\"hibernate.connection.url\">',
+      require => File_line['db_url'],
+    }
+
+    file_line { 'db_dialect':
+      ensure  => present,
+      line    => "    <property name=\"hibernate.dialect\">${_db_hibernate}</property>",
+      match   => '^( |]t)*<property name\=\"hibernate.dialect\">',
+      after   => '^( |]t)*<property name\=\"hibernate.connection.username\">',
+      require => File_line['db_user'],
     }
   }
 
