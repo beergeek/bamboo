@@ -105,14 +105,27 @@ describe 'bamboo' do
     let :params do
       {
         manage_db_settings: true,
+        db_type: 'mysql',
         db_host: 'mysql0.puppet.vm',
         db_user: 'bamboo',
-        db_port: '3306',
         db_password: 'password123',
       }
     end
 
     describe 'bamboo::config' do
+      it do
+        is_expected.to contain_archive('/tmp/mysql-connector-java-8.0.11.tar.gz').with(
+          'ensure'          => 'present',
+          'extract'         => true,
+          'extract_command' => "tar -zxf %s --exclude='lib*' mysql*.jar",
+          'extract_path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib',
+          'source'          => 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.11.tar.gz',
+          'creates'         => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib/mysql-connector-java-8.0.11',
+          'cleanup'         => true,
+          'user'            => 'bamboo',
+          'group'           => 'bamboo',
+        )
+      end
     end
   end
 end
