@@ -107,6 +107,7 @@ describe 'bamboo' do
         manage_db_settings: true,
         db_type: 'mysql',
         db_host: 'mysql0.puppet.vm',
+        db_name: 'bamboodb',
         db_user: 'bamboo',
         db_password: 'password123',
       }
@@ -135,6 +136,51 @@ describe 'bamboo' do
           'group'  => 'bamboo',
           'mode'   => '0644',
         ).with_content(/: \$\{JVM_SUPPORT_RECOMMENDED_ARGS:=" -Dbamboo\.upgrade\.fail\.if\.mysql\.unsupported=false"\}/)
+      end
+
+      it do
+        is_expected.to contain_file_line('db_driver').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "\t\t\t<property name=\"hibernate.connection.driver_class\">com.mysql.jdbc.Driver</property>",
+          'match'   => '\s*<property name="hibernate.connection.driver_class">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_hibernate').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "\t\t\t<property name=\"hibernate.dialect\">org.hibernate.dialect.MySQL5InnoDBDialect</property>",
+          'match'   => '\\s*<property name="hibernate.dialect">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_password').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "\t\t\t<property name=\"hibernate.connection.password\">password123</property>",
+          'match'   => '\\s*<property name="hibernate.connection.password">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_user').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "\t\t\t<property name=\"hibernate.connection.username\">bamboo</property>",
+          'match'   => '\\s*<property name="hibernate.connection.username">',
+        )
+      end
+
+      it do
+        is_expected.to contain_file_line('db_url').with(
+          'ensure'  => 'present',
+          'path'    => '/var/atlassian/application-data/bamboo/bamboo.cfg.xml',
+          'line'    => "\t\t\t<property name=\"hibernate.connection.url\">jdbc:mysql://mysql0.puppet.vm/bamboodb?autoReconnect=true</property>",
+          'match'   => '\\s*<property name="hibernate.connection.url">',
+        )
       end
     end
   end
