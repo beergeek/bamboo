@@ -24,7 +24,7 @@ class bamboo (
   Stdlib::Absolutepath    $bamboo_install_dir    = '/opt/atlassian/bamboo',
   String                  $bamboo_grp            = 'bamboo',
   String                  $bamboo_user           = 'bamboo',
-  String                  $version               = '6.5.1',
+  String                  $version               = '6.6.1',
 ) {
 
   if $facts['os']['family'] != 'RedHat' {
