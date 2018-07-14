@@ -69,15 +69,6 @@ describe 'bamboo' do
           'target'  => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1',
         )
       end
-
-      it do
-        is_expected.to contain_file('/etc/init.d/bamboo').with(
-          'ensure'  => 'file',
-          'owner'   => 'bamboo',
-          'group'   => 'bamboo',
-          'mode'    => '0744',
-        ).with_content(/bamboo_dir=\/opt\/atlassian\/bamboo\/current\nuser=bamboo/)
-      end
     end
 
     describe 'bamboo::config' do
@@ -87,6 +78,16 @@ describe 'bamboo' do
           'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties',
           'line'    => 'bamboo.home=/var/atlassian/application-data/bamboo',
         )
+      end
+
+      it do
+        is_expected.to contain_file('init_script').with(
+          'ensure' => 'file',
+          'path'   => '/etc/systemd/system/bamboo.service',
+          'owner'  => 'bamboo',
+          'group'  => 'bamboo',
+          'mode'   => '0644',
+        ).with_content(/User=bamboo\nExecStart=\/opt\/atlassian\/bamboo\/current\/bin\/start-bamboo.sh\nExecStop=\/opt\/atlassian\/bamboo\/current\/bin\/stop-bamboo.sh/)
       end
     end
 
@@ -112,15 +113,6 @@ describe 'bamboo' do
     end
 
     describe 'bamboo::config' do
-      it do
-        is_expected.to contain_file('db_config').with(
-          'ensure' => 'file',
-          'path'   => '/etc/systemd/system/bamboo.service',
-          'owner'  => 'bamboo',
-          'group'  => 'bamboo',
-          'mode'   => '0644',
-        )
-      end
     end
   end
 end

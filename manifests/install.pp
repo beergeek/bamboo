@@ -43,15 +43,4 @@ class bamboo::install () {
     ensure => link,
     target => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}",
   }
-
-  file { '/etc/init.d/bamboo':
-    ensure  => file,
-    owner   => $bamboo::bamboo_user,
-    group   => $bamboo::bamboo_grp,
-    mode    => '0744',
-    content => epp('bamboo/bamboo.init.epp', {
-      bamboo_install_dir => $bamboo::bamboo_install_dir,
-      bamboo_user        => $bamboo::bamboo_user,
-    }),
-  }
 }
