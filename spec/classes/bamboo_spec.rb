@@ -121,7 +121,7 @@ describe 'bamboo' do
           'extract_command' => "tar -zxf %s --exclude='lib*' mysql*.jar",
           'extract_path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib',
           'source'          => 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.11.tar.gz',
-          'creates'         => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib/mysql-connector-java-8.0.11',
+          'creates'         => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib/mysql-connector-java-8.0.11.jar',
           'cleanup'         => true,
           'user'            => 'bamboo',
           'group'           => 'bamboo',

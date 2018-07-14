@@ -18,7 +18,7 @@ class bamboo (
   Optional[String]        $java_args             = undef,
   Optional[String]        $mysql_driver_pkg      = 'mysql-connector-java-8.0.11.tar.gz',
   # $mysql_driver_jar_name must come after $mysql_driver_pkg
-  Optional[String]        $mysql_driver_jar_name = basename($mysql_driver_pkg, '.tar.gz'),
+  Optional[String]        $mysql_driver_jar_name = "${basename($mysql_driver_pkg, '.tar.gz')}.jar",
   Stdlib::Absolutepath    $bamboo_data_dir       = '/var/atlassian/application-data/bamboo',
   Stdlib::Absolutepath    $bamboo_install_dir    = '/opt/atlassian/bamboo',
   String                  $bamboo_grp            = 'bamboo',
