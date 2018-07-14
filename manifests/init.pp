@@ -4,7 +4,7 @@
 class bamboo (
   Bamboo::Db_type         $db_type            = 'postgresql',
   Bamboo::Pathurl         $source_location    = 'https://product-downloads.atlassian.com/software/bamboo/downloads',
-  Boolean                 $manage_db_settings = true,
+  Boolean                 $manage_db_settings = false,
   Boolean                 $manage_grp         = true,
   Boolean                 $manage_user        = true,
   Optional[Stdlib::Fqdn]  $db_host            = undef,

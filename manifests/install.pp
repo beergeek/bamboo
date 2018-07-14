@@ -20,7 +20,7 @@ class bamboo::install () {
     }
   }
 
-  file { $bamboo::bamboo_install_dir:
+  file { [$bamboo::bamboo_install_dir, $bamboo::bamboo_data_dir]:
     ensure  => directory,
     owner   => $bamboo::bamboo_user,
     group   => $bamboo::bamboo_grp,

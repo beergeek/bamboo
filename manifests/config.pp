@@ -8,9 +8,9 @@ class bamboo::config {
     line    => "bamboo.home=${bamboo::bamboo_data_dir}",
   }
 
-  if $manage_db_settings {
-    if $db_host == undef or $db_user == undef or $db_password == undef {
-      fail('When `manage_db_settings` is true you must provide `db_host`, `db_user` and `db_password`')
+  if $bamboo::manage_db_settings {
+    if $bamboo::db_host == undef or $bamboo::db_user == undef or $bamboo::db_password == undef or $bamboo::db_port {
+      fail('When `manage_db_settings` is true you must provide `db_host`, `db_user`, `db_port` and `db_password`')
     }
 
     file_line
