@@ -80,7 +80,7 @@ class bamboo::config {
       archive { "/tmp/${bamboo::mysql_driver_pkg}":
         ensure          => present,
         extract         => true,
-        extract_command => "tar -zxf %s --exclude='lib*' mysql*.jar",
+        extract_command => "tar -zxf %s --strip-components 1 --exclude='lib*' mysql*.jar",
         extract_path    => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}/lib",
         source          => "${bamboo::mysql_driver_source}/${bamboo::mysql_driver_pkg}",
         creates         => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}/lib/${bamboo::mysql_driver_jar_name}",
