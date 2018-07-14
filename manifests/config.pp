@@ -2,6 +2,12 @@ class bamboo::config {
 
   assert_private()
 
+  File {
+    owner   => $bamboo::bamboo_user,
+    group   => $bamboo::bamboo_grp,
+    mode    => '0644',
+  }
+
   case $facts['os']['release']['major'] {
     '6': {
       $init_file = 'bamboo.init.pp'
@@ -16,6 +22,14 @@ class bamboo::config {
     }
   }
 
+  if $bamboo::db_type == 'mysql' {
+    # If RHEL7 it uses MariaDB, which is not supported, but we can skip the check
+    # -Dbamboo.upgrade.fail.if.mysql.unsupported=false
+    $_java_args = "${bamboo::java_args} -Dbamboo.upgrade.fail.if.mysql.unsupported=false"
+  } else {
+    $_java_args = $bamboo::java_args
+  }
+
   # Configure the home/data/app directory for Bamboo
   file_line { 'bamboo_home_dir':
     ensure => present,
@@ -27,9 +41,7 @@ class bamboo::config {
   file { 'init_script':
     ensure  => file,
     path    => $script_path,
-    owner   => $bamboo::bamboo_user,
-    group   => $bamboo::bamboo_grp,
-    mode    => '0644',
+    mode    => '0744',
     content => epp("bamboo/${init_file}", {
       bamboo_user        => $bamboo::bamboo_user,
       bamboo_install_dir => "${bamboo::bamboo_install_dir}/current",
@@ -71,13 +83,20 @@ class bamboo::config {
     file { 'db_config':
       ensure  => file,
       path    => "${bamboo::bamboo_install_dir}/",
-      owner   => $bamboo::bamboo_user,
-      group   => $bamboo::bamboo_grp,
-      mode    => '0644',
       content => epp("bamboo/bamboo.cfg.xml.epp", {
         bamboo_user        => $bamboo::bamboo_user,
         bamboo_install_dir => "${bamboo::bamboo_install_dir}/current",
       }),
     }
+  }
+
+  file { 'java_args':
+    ensure  => file,
+    path    => "${bamboo::bamboo_install_dir}/atlassian-bamboo-${bamboo::version}/bin/setenv.sh",
+    content => epp('bamboo/setenv.sh.epp', {
+      java_args => $_java_args,
+      java_xms  => $bamboo::jvm_xms,
+      java_xmx  => $bamboo::jvm_xmx,
+    })
   }
 }

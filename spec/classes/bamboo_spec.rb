@@ -86,7 +86,7 @@ describe 'bamboo' do
           'path'   => '/etc/systemd/system/bamboo.service',
           'owner'  => 'bamboo',
           'group'  => 'bamboo',
-          'mode'   => '0644',
+          'mode'   => '0744',
         ).with_content(/User=bamboo\nExecStart=\/opt\/atlassian\/bamboo\/current\/bin\/start-bamboo.sh\nExecStop=\/opt\/atlassian\/bamboo\/current\/bin\/stop-bamboo.sh/)
       end
     end
@@ -125,6 +125,16 @@ describe 'bamboo' do
           'user'            => 'bamboo',
           'group'           => 'bamboo',
         )
+      end
+
+      it do
+        is_expected.to contain_file('java_args').with(
+          'ensure'  => 'file',
+          'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/bin/setenv.sh',
+          'owner'  => 'bamboo',
+          'group'  => 'bamboo',
+          'mode'   => '0644',
+        ).with_content(/: \$\{JVM_SUPPORT_RECOMMENDED_ARGS:=" -Dbamboo\.upgrade\.fail\.if\.mysql\.unsupported=false"\}/)
       end
     end
   end
