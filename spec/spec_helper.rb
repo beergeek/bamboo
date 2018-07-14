@@ -33,6 +33,9 @@ RSpec.configure do |c|
     # by default Puppet runs at warning level
     Puppet.settings[:strict] = :warning
   end
+  c.after(:suite) do
+    RSpec::Puppet::Coverage.report!
+  end
 end
 
 def ensure_module_defined(module_name)

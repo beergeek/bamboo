@@ -7,7 +7,7 @@ class bamboo (
   Boolean                 $manage_db_settings = false,
   Boolean                 $manage_grp         = true,
   Boolean                 $manage_user        = true,
-  Optional[Stdlib::Fqdn]  $db_host            = undef,
+  Optional[Stdlib::Fqdn]  $db_host            = 'localhost',
   Optional[String]        $db_name            = undef,
   Optional[String]        $db_password        = undef,
   Optional[String]        $db_user            = undef,
