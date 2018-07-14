@@ -13,6 +13,7 @@ class bamboo (
   Optional[Stdlib::Fqdn]  $db_host               = 'localhost',
   Optional[String]        $db_name               = undef,
   Optional[String]        $db_password           = undef,
+  Optional[String]        $db_port               = undef,
   Optional[String]        $db_user               = undef,
   Optional[String]        $java_args             = undef,
   Optional[String]        $mysql_driver_pkg      = 'mysql-connector-java-8.0.11.tar.gz',
@@ -22,7 +23,6 @@ class bamboo (
   Stdlib::Absolutepath    $bamboo_install_dir    = '/opt/atlassian/bamboo',
   String                  $bamboo_grp            = 'bamboo',
   String                  $bamboo_user           = 'bamboo',
-  String                  $db_port               = '5432',
   String                  $version               = '6.5.1',
 ) {
 
