@@ -34,6 +34,6 @@ class bamboo (
   contain bamboo::config
   contain bamboo::service
 
-  Class['bamboo::install'] -> Class['bamboo::config'] -> Class['bamboo::service']
+  Class['bamboo::install'] -> Class['bamboo::config'] ~> Class['bamboo::service']
 
 }
