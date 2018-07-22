@@ -51,12 +51,12 @@ describe 'bamboo' do
       end
 
       it do
-        is_expected.to contain_archive('/tmp/atlassian-bamboo-6.5.1.tar.gz').with(
+        is_expected.to contain_archive('/tmp/atlassian-bamboo-6.6.1.tar.gz').with(
           'ensure'        => 'present',
           'extract'       => true,
           'extract_path'  => '/opt/atlassian/bamboo',
-          'source'        => 'https://product-downloads.atlassian.com/software/bamboo/downloads/atlassian-bamboo-6.5.1.tar.gz',
-          'creates'       => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1',
+          'source'        => 'https://product-downloads.atlassian.com/software/bamboo/downloads/atlassian-bamboo-6.6.1.tar.gz',
+          'creates'       => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1',
           'cleanup'       => true,
           'user'          => 'bamboo',
           'group'         => 'bamboo',
@@ -66,7 +66,7 @@ describe 'bamboo' do
       it do
         is_expected.to contain_file('/opt/atlassian/bamboo/current').with(
           'ensure'  => 'link',
-          'target'  => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1',
+          'target'  => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1',
         )
       end
     end
@@ -75,7 +75,7 @@ describe 'bamboo' do
       it do
         is_expected.to contain_file_line('bamboo_home_dir').with(
           'ensure'  => 'present',
-          'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties',
+          'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties',
           'line'    => 'bamboo.home=/var/atlassian/application-data/bamboo',
         )
       end
@@ -130,9 +130,9 @@ describe 'bamboo' do
           'ensure'          => 'present',
           'extract'         => true,
           'extract_command' => "tar -zxf %s --strip-components 1 --exclude='lib*' */mysql-connector-java-5.1.46.jar",
-          'extract_path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib',
+          'extract_path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1/lib',
           'source'          => 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz',
-          'creates'         => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/lib/mysql-connector-java-5.1.46.jar',
+          'creates'         => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1/lib/mysql-connector-java-5.1.46.jar',
           'cleanup'         => true,
           'user'            => 'bamboo',
           'group'           => 'bamboo',
@@ -142,7 +142,7 @@ describe 'bamboo' do
       it do
         is_expected.to contain_file('java_args').with(
           'ensure'  => 'file',
-          'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.5.1/bin/setenv.sh',
+          'path'    => '/opt/atlassian/bamboo/atlassian-bamboo-6.6.1/bin/setenv.sh',
           'owner'  => 'bamboo',
           'group'  => 'bamboo',
           'mode'   => '0644',

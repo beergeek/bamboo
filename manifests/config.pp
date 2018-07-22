@@ -21,7 +21,7 @@ class bamboo::config {
   } elsif $facts['os']['release']['major'] == '7' {
     $init_file = 'bamboo.systemd.epp'
     $script_path = '/etc/systemd/system/bamboo.service'
-  } else {}
+  } else {
     fail("You OS version is either far too old or far to bleeding edge: ${facts['os']['name']} ${facts['os']['release']['major']}")
   }
 
