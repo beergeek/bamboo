@@ -12,18 +12,17 @@ class bamboo::config {
     path    => "${bamboo::bamboo_data_dir}/bamboo.cfg.xml",
   }
 
-  case $facts['os']['release']['major'] {
-    '6': {
+  if $facts['os']['name'] == 'Amazon' and $facts['os']['release']['major'] == '4' {
+    $init_file = 'bamboo.systemd.epp'
+    $script_path = '/etc/systemd/system/bamboo.service'
+  } elsif $facts['os']['release']['major'] == '6' {
       $init_file = 'bamboo.init.pp'
       $script_path = '/etc/init.d/bamboo'
-    }
-    '7': {
-      $init_file = 'bamboo.systemd.epp'
-      $script_path = '/etc/systemd/system/bamboo.service'
-    }
-    default: {
-      fail("You OS version is either far too old or far to bleeding edge: ${facts['os']['release']['major']}")
-    }
+  } elsif $facts['os']['release']['major'] == '7' {
+    $init_file = 'bamboo.systemd.epp'
+    $script_path = '/etc/systemd/system/bamboo.service'
+  } else {}
+    fail("You OS version is either far too old or far to bleeding edge: ${facts['os']['name']} ${facts['os']['release']['major']}")
   }
 
   if $bamboo::db_type == 'mysql' {
