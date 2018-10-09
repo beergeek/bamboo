@@ -97,7 +97,7 @@
             scheme="https" secure="true" SSLEnabled="true" sslProtocol="TLS"
             clientAuth="false"
 
-            keystoreFile="<%= $data_dir %>/jira.jks" keystorePass="changeit"
+            keystoreFile="<%= $data_dir %>/bamboo.jks" keystorePass="changeit"
         />
 <% } -%>
         <!--
