@@ -147,4 +147,14 @@ class bamboo::config {
       java_xmx  => $bamboo::jvm_xmx,
     })
   }
+
+  if $bamboo::https {
+    file { 'server.xml':
+      ensure  => file,
+      content => epp('bamboo/server.xml.epp', {
+        data_dir => $bamboo::bamboo_data_dir,
+        https    => $bamboo::https,
+      })
+    }
+  }
 }
